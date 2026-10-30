@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
@@ -10,7 +8,7 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   Flame.device.fullScreen();
   Flame.device.setLandscape();
-  PixelAdventure game = PixelAdventure();
+  final game = PixelAdventure();
 
   runApp(GameWidget(game: game));
 }
@@ -18,13 +16,15 @@ void main() {
 class PixelAdventure extends FlameGame {
   @override
   // for specifiy the color
-  Color backgroundColor() => Color(0xFF211F30);
+  Color backgroundColor() => const Color(0xFF211F30);
   late final CameraComponent cam;
   @override
-  final world = Level();
+  final world = Level(levelName: 'level-02');
 
   @override
-  FutureOr<void> onLoad() async {
+  Future<void> onLoad() async {
+    await super.onLoad();
+
     // load all the images.
     await images.loadAllImages();
 
@@ -35,6 +35,5 @@ class PixelAdventure extends FlameGame {
     );
     cam.viewfinder.anchor = Anchor.topLeft;
     addAll([cam, world]);
-    return super.onLoad();
   }
 }
